@@ -1,0 +1,13 @@
+# Xcode / build output
+build/
+DerivedData/
+*.xcresult
+xcuserdata/
+*.xcuserstate
+
+# macOS
+.DS_Store
+
+# Editors
+.idea/
+.vscode/

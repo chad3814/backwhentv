@@ -1,0 +1,85 @@
+name: BackWhenTV
+options:
+  bundleIdPrefix: stream.backwhen
+  deploymentTarget:
+    tvOS: "17.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+  xcodeVersion: "27.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    SWIFT_STRICT_CONCURRENCY: minimal
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    DEAD_CODE_STRIPPING: YES
+
+targets:
+  BackWhenTV:
+    type: application
+    platform: tvOS
+    sources:
+      - path: BackWhenTV
+    info:
+      path: BackWhenTV/Info.plist
+      properties:
+        CFBundleDisplayName: BackWhenTV
+        CFBundleName: BackWhenTV
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        LSRequiresIPhoneOS: true
+        UIUserInterfaceStyle: Dark
+        UIApplicationSupportsIndirectInputEvents: true
+        UILaunchScreen: {}
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: false
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "3"
+        PRODUCT_BUNDLE_IDENTIFIER: stream.backwhen.tv
+        ASSETCATALOG_COMPILER_APPICON_NAME: "App Icon & Top Shelf Image"
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CODE_SIGN_STYLE: Automatic
+        SUPPORTS_MACCATALYST: NO
+
+  BackWhenTVTests:
+    type: bundle.unit-test
+    platform: tvOS
+    sources:
+      - path: BackWhenTVTests
+    dependencies:
+      - target: BackWhenTV
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: stream.backwhen.tv.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+  BackWhenTVUITests:
+    type: bundle.ui-testing
+    platform: tvOS
+    sources:
+      - path: BackWhenTVUITests
+    dependencies:
+      - target: BackWhenTV
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: stream.backwhen.tv.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: BackWhenTV
+
+schemes:
+  BackWhenTV:
+    build:
+      targets:
+        BackWhenTV: all
+        BackWhenTVTests: [test]
+        BackWhenTVUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - BackWhenTVTests
+        - BackWhenTVUITests
