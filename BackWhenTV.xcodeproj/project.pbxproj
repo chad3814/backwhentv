@@ -23,6 +23,7 @@
 		573EC7AF4CBC3F231BFDF14C /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CB386CA6F293E9873E0405 /* PlayerController.swift */; };
 		83735B6C8E2E38219C5DFB37 /* UsageReporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723DDD3F0880E76DC27E94C /* UsageReporterTests.swift */; };
 		B8269A32540783981BCF2770 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471535F0B77B1AA7ACB773C0 /* SplashView.swift */; };
+		C54227E20DC689291ADE5CEA /* GuidePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF02251F7B89297DB387DE6 /* GuidePreview.swift */; };
 		C8F50CDF2AA5F4C933AC1D73 /* WeatherOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B94701CB15CDADE04A631FE /* WeatherOverlay.swift */; };
 		CDDA212470D06DC2B1FF9A5D /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD911003F37E4D8E2DC0070 /* BannerView.swift */; };
 		DBE79DBD1994892BF109B104 /* PodPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59EBE34F00B0FFC3DFF77CA /* PodPlannerTests.swift */; };
@@ -55,6 +56,7 @@
 		0F45714F00A73872F10AB1AB /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		1E1DF3CD352188E833793EB6 /* PodPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodPlanner.swift; sourceTree = "<group>"; };
 		2B94701CB15CDADE04A631FE /* WeatherOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherOverlay.swift; sourceTree = "<group>"; };
+		3BF02251F7B89297DB387DE6 /* GuidePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidePreview.swift; sourceTree = "<group>"; };
 		471535F0B77B1AA7ACB773C0 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		4FF3A890A8D50C553F08DD68 /* ModelDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDecodingTests.swift; sourceTree = "<group>"; };
 		52CB386CA6F293E9873E0405 /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
@@ -63,7 +65,7 @@
 		6836DCFF0A1DB3ABC3366F02 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		6A42580270885991E19967D4 /* GuideNavigationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideNavigationUITests.swift; sourceTree = "<group>"; };
 		8ED3EEE237B470EC0665547F /* GuideStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideStore.swift; sourceTree = "<group>"; };
-		919841221FF2E443B448D6CF /* BackWhenTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BackWhenTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		919841221FF2E443B448D6CF /* BackWhenTV.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = BackWhenTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		922CCE7F06264C33FDBE2E88 /* ScheduleEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleEngineTests.swift; sourceTree = "<group>"; };
 		9FAA223112FD926B953930D1 /* ScheduleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleEngine.swift; sourceTree = "<group>"; };
 		A0E2B784FACC33780AF780C6 /* UsageReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageReporter.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				EBD911003F37E4D8E2DC0070 /* BannerView.swift */,
+				3BF02251F7B89297DB387DE6 /* GuidePreview.swift */,
 				DC6A96CB2849389E3099EBEB /* GuideView.swift */,
 				FCCE247E22521BD9C8222CB7 /* PlayerLayerView.swift */,
 				F7344DB30DEC4756BA68413F /* RemoteSurface.swift */,
@@ -311,6 +314,7 @@
 				E19DACECF4656A5121297EE0 /* APIClient.swift in Sources */,
 				0FC76BDE4F32BBFC85E71884 /* BackWhenTVApp.swift in Sources */,
 				CDDA212470D06DC2B1FF9A5D /* BannerView.swift in Sources */,
+				C54227E20DC689291ADE5CEA /* GuidePreview.swift in Sources */,
 				03AB0925703276E840762A5E /* GuideStore.swift in Sources */,
 				33BDB144AB86B2C6075B8B49 /* GuideView.swift in Sources */,
 				3CFCA1D0501BA70E4B515CF2 /* Models.swift in Sources */,
@@ -419,7 +423,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SZUN8RDF5D;
 				INFOPLIST_FILE = BackWhenTV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -575,7 +578,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SZUN8RDF5D;
 				INFOPLIST_FILE = BackWhenTV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

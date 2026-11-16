@@ -10,7 +10,8 @@ into the next one on the schedule.
 
 ## What it does
 
-- Full-screen **cable guide** with the live lineup, current show, and up-next
+- Full-screen **cable guide** with a selected-channel preview showing the
+  channel, now playing, elapsed/remaining time, and up next
 - Tunes into the live point of each programme (not always from the start)
 - **Channel surfing** with the remote, plus a channel banner with clock
 - Weather channel: local conditions, forecast, extended forecast, alerts,

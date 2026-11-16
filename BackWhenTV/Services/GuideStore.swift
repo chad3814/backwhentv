@@ -149,7 +149,7 @@ final class GuideStore {
 
     func program(for channel: Channel, at date: Date) -> ProgramInfo {
         if channel.kind == "weather" {
-            return ProgramInfo(title: "Local forecast", next: "WeatherStar 4000", isAd: false)
+            return ProgramInfo(title: "Local forecast", next: nil, isAd: false)
         }
         guard let schedule = schedule(for: channel), !schedule.items.isEmpty,
               let slot = ScheduleEngine.slot(in: schedule.items, anchor: schedule.anchor ?? anchor, at: date)
@@ -160,10 +160,16 @@ final class GuideStore {
         let current = slot.item
         let nextIndex = ScheduleEngine.nextProgramIndex(after: slot.index, in: schedule.items)
         let nextTitle = schedule.items[nextIndex].t
+        let end = slot.start.addingTimeInterval(current.d)
+        let progress = current.d > 0 ? min(1, max(0, slot.offset / current.d)) : nil
+
         return ProgramInfo(
             title: current.isAd ? "COMMERCIAL BREAK" : current.t,
             next: nextTitle == current.t ? nil : nextTitle,
-            isAd: current.isAd
+            isAd: current.isAd,
+            start: slot.start,
+            end: end,
+            progress: progress
         )
     }
 

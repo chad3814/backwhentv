@@ -29,9 +29,11 @@ final class GuideNavigationUITests: XCTestCase {
         )
         attachScreenshot(named: "02-guide")
 
-        // Move two rows down and tune the focused channel.
+        // Move two rows down and check the preview follows the focus.
         XCUIRemote.shared.press(.down)
         XCUIRemote.shared.press(.down)
+        attachScreenshot(named: "02b-guide-moved")
+
         XCUIRemote.shared.press(.select)
 
         XCTAssertTrue(

@@ -165,4 +165,23 @@ struct ProgramInfo: Equatable {
     let title: String
     let next: String?
     let isAd: Bool
+    let start: Date?
+    let end: Date?
+    let progress: Double?
+
+    init(
+        title: String,
+        next: String?,
+        isAd: Bool,
+        start: Date? = nil,
+        end: Date? = nil,
+        progress: Double? = nil
+    ) {
+        self.title = title
+        self.next = next
+        self.isAd = isAd
+        self.start = start
+        self.end = end
+        self.progress = progress
+    }
 }
