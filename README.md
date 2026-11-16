@@ -11,7 +11,8 @@ into the next one on the schedule.
 ## What it does
 
 - Full-screen **cable guide** with a selected-channel preview showing the
-  channel, now playing, elapsed/remaining time, and up next
+  channel, now playing, elapsed/remaining time, up next, and an optional
+  programme overview from OpenMetadata
 - Tunes into the live point of each programme (not always from the start)
 - **Channel surfing** with the remote, plus a channel banner with clock
 - Weather channel: local conditions, forecast, extended forecast, alerts,
@@ -128,6 +129,46 @@ foreground. The body is:
 - If a report fails, the minutes stay queued and are included in the next
   attempt.
 
+### Programme metadata (optional)
+
+With an OpenMetadata API key, the guide preview also shows a short overview of
+the selected programme. The key is never stored in the repository.
+
+1. Put the key in `open-metadata-api-key` at the repository root. That path is
+   ignored by git.
+2. Generate the ignored local build setting:
+
+   ```sh
+   ./Scripts/make_local_config.sh
+   ```
+
+   This writes `Config/Local.xcconfig`. `Config/Base.xcconfig` includes it
+   optionally and exposes the value as `OPEN_METADATA_API_KEY`, which is
+   substituted into the app's `Info.plist` at build time.
+3. Rebuild the app.
+
+Without `Config/Local.xcconfig` the app builds normally and simply skips
+metadata. The key is embedded in any app you build, so do not distribute an
+archive made with it.
+
+When a schedule is loaded or refreshed, the app queues the current and next
+non-advert programme for every non-weather channel. Titles matching
+`S[0-9]+E[0-9]+` are looked up as `tv`; everything else as `movies`. Requests go
+to `POST https://openmetadata.nexus/api/v1/lookup` in batches of at most 100
+with a bearer token. Cleanups such as `RETRO SHORT |` and pipe separators are
+removed first.
+
+The lookups send only the programme title and category to `openmetadata.nexus`;
+no viewing ID or channel minute data is included.
+
+A returned overview is accepted when the lookup is `resolved`, or when it is
+`unresolved` with at least `0.4` confidence and a non-empty overview; low
+confidence candidates are ignored. Partial (`202`) answers are polled via
+`/api/v1/lookup/{id}`. The queue uses one worker, pauses between batches, and
+honours `Retry-After` on `429`. Misses are remembered for the session so the
+guide does not repeatedly ask for the same title. The overview replaces the
+channel blurb in the guide's preview card while it is focused.
+
 ## Project layout
 
 ```
@@ -142,6 +183,8 @@ BackWhenTV/
     PodPlanner.swift          Deterministic commercial pod generator
     PlayerController.swift    AVPlayer, seeking, pods, fallbacks, deadlines
     UsageReporter.swift       Anonymous channel-minute reporting to /api/ev
+    MetadataStore.swift       Queues OpenMetadata lookups and caches overviews
+    OpenMetadataClient.swift  openmetadata.nexus lookup and polling client
   Views/
     GuideView.swift           Guide grid and focus styling
     BannerView.swift          Channel banner, loading card, no-signal card
@@ -151,9 +194,11 @@ BackWhenTV/
     SplashView.swift          Tuning/error screen
     Theme.swift               Colors, condensed type, shared bits
   Assets.xcassets/            App icon and top shelf art
-BackWhenTVTests/             Schedule, pod, and decoding tests
+Config/Base.xcconfig          Optional include for the ignored local key
+BackWhenTVTests/             Schedule, pod, metadata, and decoding tests
 BackWhenTVUITests/           Remote-driven guide smoke test
 Scripts/make_artwork.py      Regenerates the icon and top shelf PNGs
+Scripts/make_local_config.sh Generates Config/Local.xcconfig from the key file
 ```
 
 ## Tests
@@ -165,6 +210,8 @@ Scripts/make_artwork.py      Regenerates the icon and top shelf PNGs
 - `ModelDecodingTests` covers the live JSON shape, including optional fields.
 - `UsageReporterTests` covers id generation/persistence, payload shape, minute
   rounding, channel attribution, and retry behaviour when a report fails.
+- `MetadataStoreTests` covers title cleanup, episode/movie categorisation,
+  request shape, result filtering, batching, deduplication, and misses.
 - `GuideNavigationUITests` launches the app in the simulator, waits for the
   weather channel, opens the guide with Menu, tunes a channel, surfs with Up,
   pauses/resumes, and checks Select also opens the guide.

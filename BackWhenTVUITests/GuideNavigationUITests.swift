@@ -7,7 +7,7 @@ final class GuideNavigationUITests: XCTestCase {
 
     func testGuideOpensWithTheRemoteAndChangesChannels() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-resetState"]
+        app.launchArguments = ["-resetState", "-disableMetadata"]
         app.launch()
 
         // The app opens on the last tuned channel, WeatherStar by default.

@@ -21,7 +21,10 @@
 		492087EA597D38D216DE0EBA /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9FFDDFE6000943A02E244A /* Theme.swift */; };
 		4EE6AB7C825F53BE9FD20EC2 /* GuideNavigationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A42580270885991E19967D4 /* GuideNavigationUITests.swift */; };
 		573EC7AF4CBC3F231BFDF14C /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CB386CA6F293E9873E0405 /* PlayerController.swift */; };
+		5C3B8BD587B7F1B574E95C88 /* OpenMetadataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE674A73445DF7C20AC95E10 /* OpenMetadataClient.swift */; };
 		83735B6C8E2E38219C5DFB37 /* UsageReporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723DDD3F0880E76DC27E94C /* UsageReporterTests.swift */; };
+		904707E0312E2305F70F9A6C /* MetadataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A189C9A1675900BAF232CC /* MetadataStoreTests.swift */; };
+		AEBCB9276083E1FE9F1A7CD8 /* MetadataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9B6881197F46DFDC8A2D8 /* MetadataStore.swift */; };
 		B8269A32540783981BCF2770 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471535F0B77B1AA7ACB773C0 /* SplashView.swift */; };
 		C54227E20DC689291ADE5CEA /* GuidePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF02251F7B89297DB387DE6 /* GuidePreview.swift */; };
 		C8F50CDF2AA5F4C933AC1D73 /* WeatherOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B94701CB15CDADE04A631FE /* WeatherOverlay.swift */; };
@@ -53,6 +56,7 @@
 /* Begin PBXFileReference section */
 		01D1531885BC9C435FC8969A /* BackWhenTVUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BackWhenTVUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04BBAF6BF2817EBA1C93414B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		0BD6407CAD66B5B2CDC61999 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		0F45714F00A73872F10AB1AB /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		1E1DF3CD352188E833793EB6 /* PodPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodPlanner.swift; sourceTree = "<group>"; };
 		2B94701CB15CDADE04A631FE /* WeatherOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherOverlay.swift; sourceTree = "<group>"; };
@@ -69,12 +73,15 @@
 		922CCE7F06264C33FDBE2E88 /* ScheduleEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleEngineTests.swift; sourceTree = "<group>"; };
 		9FAA223112FD926B953930D1 /* ScheduleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleEngine.swift; sourceTree = "<group>"; };
 		A0E2B784FACC33780AF780C6 /* UsageReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageReporter.swift; sourceTree = "<group>"; };
+		A3C9B6881197F46DFDC8A2D8 /* MetadataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataStore.swift; sourceTree = "<group>"; };
+		A6A189C9A1675900BAF232CC /* MetadataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataStoreTests.swift; sourceTree = "<group>"; };
 		A723DDD3F0880E76DC27E94C /* UsageReporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageReporterTests.swift; sourceTree = "<group>"; };
 		A84E7406C396EE1D9477EF41 /* BackWhenTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackWhenTVApp.swift; sourceTree = "<group>"; };
 		A9B4D51DF1C7B584DC82F7E6 /* clips.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = clips.json; sourceTree = "<group>"; };
 		BE31F0DB7B32B71F118DCE94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC6A96CB2849389E3099EBEB /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
 		DC9FFDDFE6000943A02E244A /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		DE674A73445DF7C20AC95E10 /* OpenMetadataClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMetadataClient.swift; sourceTree = "<group>"; };
 		E59EBE34F00B0FFC3DFF77CA /* PodPlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodPlannerTests.swift; sourceTree = "<group>"; };
 		EBD911003F37E4D8E2DC0070 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		F7344DB30DEC4756BA68413F /* RemoteSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSurface.swift; sourceTree = "<group>"; };
@@ -85,6 +92,7 @@
 		10B2D4F57C44DE4A6343D599 /* BackWhenTVTests */ = {
 			isa = PBXGroup;
 			children = (
+				A6A189C9A1675900BAF232CC /* MetadataStoreTests.swift */,
 				4FF3A890A8D50C553F08DD68 /* ModelDecodingTests.swift */,
 				E59EBE34F00B0FFC3DFF77CA /* PodPlannerTests.swift */,
 				922CCE7F06264C33FDBE2E88 /* ScheduleEngineTests.swift */,
@@ -132,6 +140,8 @@
 			children = (
 				0F45714F00A73872F10AB1AB /* APIClient.swift */,
 				8ED3EEE237B470EC0665547F /* GuideStore.swift */,
+				A3C9B6881197F46DFDC8A2D8 /* MetadataStore.swift */,
+				DE674A73445DF7C20AC95E10 /* OpenMetadataClient.swift */,
 				52CB386CA6F293E9873E0405 /* PlayerController.swift */,
 				1E1DF3CD352188E833793EB6 /* PodPlanner.swift */,
 				9FAA223112FD926B953930D1 /* ScheduleEngine.swift */,
@@ -168,8 +178,17 @@
 				A6A9681F05CDE48F5C737429 /* BackWhenTV */,
 				10B2D4F57C44DE4A6343D599 /* BackWhenTVTests */,
 				C676A0C20E75E62AEEC0A033 /* BackWhenTVUITests */,
+				B639A61D82AED246E7A73C9A /* Config */,
 				6AAA2514F4ABC78A64470051 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		B639A61D82AED246E7A73C9A /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				0BD6407CAD66B5B2CDC61999 /* Base.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		C676A0C20E75E62AEEC0A033 /* BackWhenTVUITests */ = {
@@ -300,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				904707E0312E2305F70F9A6C /* MetadataStoreTests.swift in Sources */,
 				420FEDC348AC1F9EEFD3C256 /* ModelDecodingTests.swift in Sources */,
 				DBE79DBD1994892BF109B104 /* PodPlannerTests.swift in Sources */,
 				F23397799592A7831DA41014 /* ScheduleEngineTests.swift in Sources */,
@@ -317,7 +337,9 @@
 				C54227E20DC689291ADE5CEA /* GuidePreview.swift in Sources */,
 				03AB0925703276E840762A5E /* GuideStore.swift in Sources */,
 				33BDB144AB86B2C6075B8B49 /* GuideView.swift in Sources */,
+				AEBCB9276083E1FE9F1A7CD8 /* MetadataStore.swift in Sources */,
 				3CFCA1D0501BA70E4B515CF2 /* Models.swift in Sources */,
+				5C3B8BD587B7F1B574E95C88 /* OpenMetadataClient.swift in Sources */,
 				573EC7AF4CBC3F231BFDF14C /* PlayerController.swift in Sources */,
 				37A16CF6965846D9EF4632E9 /* PlayerLayerView.swift in Sources */,
 				F6E5BB7754DE11E3064301E1 /* PodPlanner.swift in Sources */,
@@ -418,6 +440,7 @@
 		};
 		341ED52BB34B4B4F6025766A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0BD6407CAD66B5B2CDC61999 /* Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -573,6 +596,7 @@
 		};
 		F265C1E3333FF3A10389957E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0BD6407CAD66B5B2CDC61999 /* Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

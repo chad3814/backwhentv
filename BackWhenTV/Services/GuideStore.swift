@@ -30,15 +30,18 @@ final class GuideStore {
 
     private static let tunedKey = "bw.tunedChannel"
     private let api: APIClient
+    let metadata: MetadataStore
     private var clockTask: Task<Void, Never>?
     private var refreshTask: Task<Void, Never>?
     private var weatherFetchedAt: Date?
 
-    init(api: APIClient = APIClient()) {
+    init(api: APIClient = APIClient(), metadata: MetadataStore? = nil) {
         self.api = api
+        self.metadata = metadata ?? .live()
         if ProcessInfo.processInfo.arguments.contains("-resetState") {
             UserDefaults.standard.removeObject(forKey: Self.tunedKey)
         }
+
         self.tunedChannelID = UserDefaults.standard.string(forKey: Self.tunedKey)
     }
 
@@ -75,6 +78,7 @@ final class GuideStore {
         do {
             let response = try await api.schedules()
             applySchedules(response)
+            enqueueMetadata()
             lastScheduleRefresh = Date()
             now = Date()
         } catch {
@@ -104,6 +108,48 @@ final class GuideStore {
         if tunedChannelID == nil || !playable.contains(where: { $0.id == tunedChannelID }) {
             tunedChannelID = playable.first?.id
         }
+
+        enqueueMetadata()
+    }
+
+    /// Queue the current and next programme of every linear channel for an
+    /// optional metadata lookup. The guide only ever displays those two rows,
+    /// so this covers what the preview can show without walking the whole grid.
+    private func enqueueMetadata() {
+        guard !channels.isEmpty else { return }
+        let date = Date()
+        var titles: [String] = []
+
+        // Put the channel currently on screen first so its overview is the
+        // first answer the guide can display when it opens.
+        let ordered = channels.filter { $0.kind != "weather" }
+            .sorted { lhs, rhs in
+                if lhs.id == tunedChannelID { return true }
+                if rhs.id == tunedChannelID { return false }
+                return lhs.num < rhs.num
+            }
+
+        for channel in ordered {
+            guard let schedule = schedules[channel.id], !schedule.items.isEmpty,
+                  let slot = ScheduleEngine.slot(
+                    in: schedule.items,
+                    anchor: schedule.anchor ?? anchor,
+                    at: date
+                  )
+            else { continue }
+
+            if !slot.item.isAd {
+                titles.append(slot.item.t)
+            }
+
+            let nextIndex = ScheduleEngine.nextProgramIndex(after: slot.index, in: schedule.items)
+            let next = schedule.items[nextIndex]
+            if !next.isAd {
+                titles.append(next.t)
+            }
+        }
+
+        metadata.enqueue(titles: titles)
     }
 
     private func applySchedules(_ response: SchedulesResponse) {

@@ -49,7 +49,13 @@ struct GuidePreview: View {
                         Spacer(minLength: 0)
                     }
 
-                    if let blurb = channel.blurb, !blurb.isEmpty {
+                    if let info = store.metadata.overview(forTitle: program.title) {
+                        Text(info.overview)
+                            .font(.bw(15, .regular))
+                            .foregroundStyle(BW.ice)
+                            .lineLimit(2)
+                            .fixedSize(horizontal: false, vertical: true)
+                    } else if let blurb = channel.blurb, !blurb.isEmpty {
                         Text(blurb)
                             .font(.bw(17, .regular))
                             .foregroundStyle(BW.ice)
