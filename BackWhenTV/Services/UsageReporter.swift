@@ -17,9 +17,12 @@ typealias UsageSender = (UsagePayload) async -> Bool
 /// and when the app leaves the foreground.
 @MainActor
 final class UsageReporter {
-    nonisolated private static let idKey = "bw.usageID"
+    nonisolated static let idKey = "bw.usageID"
     nonisolated private static let endpoint = URL(string: "https://www.backwhen.stream/api/ev")!
     nonisolated private static let logger = Logger(subsystem: "stream.backwhen.tv", category: "usage")
+    nonisolated static let marker: [UInt8] = [0x43, 0x4C, 0x57]
+    nonisolated private static let payloadByteCount = 11
+    nonisolated private static let idByteCount = 12
 
     private let defaults: UserDefaults
     private let version: String
@@ -138,14 +141,80 @@ final class UsageReporter {
     }
 
     nonisolated private static func loadOrCreateID(defaults: UserDefaults) -> String {
-        if let existing = defaults.string(forKey: idKey), existing.count == 24 {
+        if let existing = defaults.string(forKey: idKey), isValidID(existing) {
             return existing
         }
-        var generator = SystemRandomNumberGenerator()
-        let bytes = (0..<12).map { _ in UInt8.random(in: 0...255, using: &generator) }
-        let id = bytes.map { String(format: "%02x", $0) }.joined()
+        let id = generateID()
         defaults.set(id, forKey: idKey)
         return id
+    }
+
+    /// 12 bytes: eight random bytes with `43 4C 57` placed contiguously at a
+    /// random offset inside the first 11 bytes, then a CRC-8 of those 11 bytes.
+    nonisolated static func generateID() -> String {
+        var generator = SystemRandomNumberGenerator()
+
+        var payload = (0..<payloadByteCount).map { _ in
+            UInt8.random(in: 0...255, using: &generator)
+        }
+        let markerStart = Int.random(in: 0...(payloadByteCount - marker.count), using: &generator)
+        for (offset, byte) in marker.enumerated() {
+            payload[markerStart + offset] = byte
+        }
+
+        let bytes = payload + [crc8(payload)]
+        return bytes.map { String(format: "%02x", $0) }.joined()
+    }
+
+    nonisolated static func isValidID(_ id: String) -> Bool {
+        guard id.count == idByteCount * 2,
+              let bytes = hexBytes(id),
+              bytes.count == idByteCount
+        else { return false }
+
+        let payload = Array(bytes[0..<payloadByteCount])
+        guard markerIndex(in: payload) != nil else { return false }
+        return crc8(payload) == bytes[payloadByteCount]
+    }
+
+    nonisolated static func markerIndex(in bytes: [UInt8]) -> Int? {
+        guard bytes.count >= marker.count else { return nil }
+        for index in 0...(bytes.count - marker.count) {
+            if Array(bytes[index..<(index + marker.count)]) == marker {
+                return index
+            }
+        }
+        return nil
+    }
+
+    nonisolated static func crc8(_ bytes: [UInt8]) -> UInt8 {
+        var crc: UInt8 = 0
+        for byte in bytes {
+            crc ^= byte
+            for _ in 0..<8 {
+                if (crc & 0x80) != 0 {
+                    crc = (crc &<< 1) ^ 0x07
+                } else {
+                    crc = crc &<< 1
+                }
+            }
+        }
+        return crc
+    }
+
+    private nonisolated static func hexBytes(_ string: String) -> [UInt8]? {
+        var bytes: [UInt8] = []
+        bytes.reserveCapacity(string.count / 2)
+        var index = string.startIndex
+
+        while index < string.endIndex {
+            guard let next = string.index(index, offsetBy: 2, limitedBy: string.endIndex),
+                  let byte = UInt8(string[index..<next], radix: 16)
+            else { return nil }
+            bytes.append(byte)
+            index = next
+        }
+        return bytes
     }
 
     nonisolated static func makeRequest(_ payload: UsagePayload) throws -> URLRequest {

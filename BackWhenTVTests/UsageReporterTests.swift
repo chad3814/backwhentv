@@ -27,14 +27,93 @@ final class UsageReporterTests: XCTestCase {
     }
 
     @MainActor
-    func testCreatesAndPersistsA24CharacterHexID() {
+    func testCreatesAndPersistsAFormattedID() {
         let reporter = makeReporter(clock: Date.init) { _ in true }
 
         XCTAssertEqual(reporter.id.count, 24)
         XCTAssertTrue(reporter.id.allSatisfy(\.isHexDigit))
+        XCTAssertTrue(UsageReporter.isValidID(reporter.id))
+        XCTAssertEqual(defaults.string(forKey: UsageReporter.idKey), reporter.id)
 
         let second = makeReporter(clock: Date.init) { _ in true }
         XCTAssertEqual(second.id, reporter.id)
+    }
+
+    func testGeneratedIDLayoutAndChecksum() throws {
+        let id = UsageReporter.generateID()
+        XCTAssertEqual(id.count, 24)
+        XCTAssertTrue(UsageReporter.isValidID(id))
+
+        let bytes = try decode(id)
+        XCTAssertEqual(bytes.count, 12)
+
+        let payload = Array(bytes.prefix(11))
+        let markerIndex = try XCTUnwrap(UsageReporter.markerIndex(in: payload))
+        XCTAssertTrue((0...8).contains(markerIndex))
+        XCTAssertEqual(Array(payload[markerIndex..<(markerIndex + 3)]), [0x43, 0x4C, 0x57])
+        XCTAssertEqual(UsageReporter.crc8(payload), bytes[11])
+    }
+
+    func testMarkerIsPlacedAtRandomOffsets() throws {
+        var positions: Set<Int> = []
+
+        for _ in 0..<200 {
+            let bytes = try decode(UsageReporter.generateID())
+            let payload = Array(bytes.prefix(11))
+            let index = try XCTUnwrap(UsageReporter.markerIndex(in: payload))
+            XCTAssertTrue((0...8).contains(index))
+            positions.insert(index)
+        }
+
+        XCTAssertGreaterThan(positions.count, 1)
+    }
+
+    func testReadmeExampleIDIsValid() {
+        XCTAssertTrue(UsageReporter.isValidID("96e16bd9a5163051434c5770"))
+    }
+
+    func testChecksumRejectsAMutatedID() throws {
+        let id = UsageReporter.generateID()
+        var bytes = try decode(id)
+        bytes[11] ^= 0x01 // corrupt the checksum byte itself
+
+        let mutated = bytes.map { String(format: "%02x", $0) }.joined()
+        XCTAssertFalse(UsageReporter.isValidID(mutated))
+    }
+
+    @MainActor
+    func testOldUnmarkedIDIsReplaced() {
+        let oldID = "0123456789abcdef01234567"
+        defaults.set(oldID, forKey: UsageReporter.idKey)
+
+        let reporter = makeReporter(clock: Date.init) { _ in true }
+
+        XCTAssertNotEqual(reporter.id, oldID)
+        XCTAssertTrue(UsageReporter.isValidID(reporter.id))
+        XCTAssertEqual(defaults.string(forKey: UsageReporter.idKey), reporter.id)
+    }
+
+    @MainActor
+    func testExistingFormattedIDIsPreserved() {
+        let id = UsageReporter.generateID()
+        defaults.set(id, forKey: UsageReporter.idKey)
+
+        let reporter = makeReporter(clock: Date.init) { _ in true }
+
+        XCTAssertEqual(reporter.id, id)
+    }
+
+    private func decode(_ hex: String) throws -> [UInt8] {
+        var bytes: [UInt8] = []
+        var index = hex.startIndex
+
+        while index < hex.endIndex {
+            let next = try XCTUnwrap(hex.index(index, offsetBy: 2, limitedBy: hex.endIndex))
+            let byte = try XCTUnwrap(UInt8(hex[index..<next], radix: 16))
+            bytes.append(byte)
+            index = next
+        }
+        return bytes
     }
 
     @MainActor

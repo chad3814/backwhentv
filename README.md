@@ -116,11 +116,14 @@ The app submits the same anonymous viewing stats as the web player to
 foreground. The body is:
 
 ```json
-{"id":"b42c19c4483d004fd947c5bb","p":"appletv","v":"1.0","r":"","w":{"ia-kids-wb":5}}
+{"id":"96e16bd9a5163051434c5770","p":"appletv","v":"1.0","r":"","w":{"ia-kids-wb":5}}
 ```
 
-- `id` is 12 random bytes rendered as 24 lowercase hex characters, generated on
-  first use and stored in the app's `UserDefaults`.
+- `id` is 12 bytes rendered as 24 lowercase hex characters: eight random bytes,
+  the marker `43 4C 57` (ASCII `CLW`) placed contiguously at a random offset
+  inside the first 11 bytes, then a CRC-8 checksum of those 11 bytes. It is
+  generated on first use and stored in the app's `UserDefaults`. A stored ID
+  that fails the marker/checksum test is regenerated once.
 - `p` is always `appletv`; `v` is `CFBundleShortVersionString`; `r` is empty.
 - `w` maps channel ids to minutes watched, using the same rounding as the web
   player (a partial minute rounds to the nearest minute).
